@@ -25,8 +25,8 @@
                     <thead>
                         <tr>
                             <th>Nama</th>
-                            <th>Kategori</th>
-                            <th>Harga</th>
+                            <th>Harga/Karpet</th>
+                            <th>Deskripsi</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -35,12 +35,8 @@
                         @foreach($layanans as $layanan)
                         <tr>
                             <td>{{ $layanan->nama }}</td>
-                            <td>
-                                <span class="badge bg-{{ $layanan->kategori == 'motor' ? 'primary' : 'success' }}">
-                                    {{ ucfirst($layanan->kategori) }}
-                                </span>
-                            </td>
-                            <td>Rp {{ number_format($layanan->harga, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($layanan->harga_per_karpet, 0, ',', '.') }}/karpet</td>
+                            <td>{{ $layanan->deskripsi ?? '—' }}</td>
                             <td>
                                 <span class="badge bg-{{ $layanan->is_active ? 'success' : 'danger' }}">
                                     {{ $layanan->is_active ? 'Aktif' : 'Nonaktif' }}

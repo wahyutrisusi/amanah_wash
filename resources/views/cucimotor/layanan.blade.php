@@ -45,11 +45,11 @@
                         <div class="card-body p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h3 class="card-title h4">{{ $item->nama }}</h3>
-                                <span class="price-tag">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>
+                                <span class="price-tag">Rp {{ number_format($item->harga_per_karpet, 0, ',', '.') }}/karpet</span>
                             </div>
                             <p class="card-text">{{ $item->deskripsi }}</p>
                             <a href="{{ route('pemesanan') }}" class="btn btn-primary">
-                                <i class="fas fa-calendar-check me-2"></i>Pesan Sekarang
+                                <i class="fas fa-calendar-check me-2"></i>Cek Pesanan
                             </a>
                         </div>
                     </div>

@@ -13,21 +13,20 @@ class Pembayaran extends Model
     
     protected $fillable = [
         'pemesanan_id',
-        'jumlah',
+        'total_harga',
+        'status_pembayaran',
         'metode_pembayaran',
-        'channel_pembayaran',
-        'nomor_virtual_account',
-        'qr_code',
-        'snap_token',
-        'status',
-        'expired_at',
-        'paid_at'
+        'tanggal_bayar',
+        'catatan',
     ];
 
     protected $casts = [
-        'expired_at' => 'datetime',
-        'paid_at' => 'datetime'
+        'tanggal_bayar' => 'datetime',
+        'total_harga'   => 'decimal:2',
     ];
+
+    const STATUS_BELUM_BAYAR = 'belum_bayar';
+    const STATUS_LUNAS       = 'lunas';
 
     public function pemesanan()
     {

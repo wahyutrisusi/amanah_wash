@@ -9,28 +9,20 @@ use App\Http\Controllers\Admin\AuthController;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
 
+// Public Routes
 Route::get('/', [CuciMotorController::class, 'index'])->name('beranda');
 Route::get('/layanan', [CuciMotorController::class, 'layanan'])->name('layanan');
-Route::get('/pemesanan', [CuciMotorController::class, 'pemesanan'])->name('pemesanan');
-Route::post('/pemesanan', [CuciMotorController::class, 'storePemesanan'])->name('pemesanan.store');
 Route::get('/galeri', [CuciMotorController::class, 'galeri'])->name('galeri');
 Route::get('/kontak', [CuciMotorController::class, 'kontak'])->name('kontak');
 Route::get('/blog', [CuciMotorController::class, 'blog'])->name('blog');
-Route::get('/pemesanan/{id}/cek', [PemesananController::class, 'cek'])->name('pemesanan.cek');
-Route::post('/pemesanan/cek-status', [PemesananController::class, 'cekStatus'])->name('pemesanan.cek-status');
 
-// Tambahkan route pembayaran
-Route::get('/pemesanan/{id}/pembayaran', [CuciMotorController::class, 'pembayaran'])->name('pemesanan.pembayaran');
-
-// Auth Routes
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+// Cek Status Pesanan (Pelanggan)
+// route('pemesanan') → halaman cek status (menggantikan form pemesanan lama)
+Route::get('/cek-pesanan', [PemesananController::class, 'cekForm'])->name('pemesanan');
+Route::post('/cek-pesanan', [PemesananController::class, 'cekStatus'])->name('pemesanan.cek-status');
+Route::get('/cek-pesanan/{id}', [PemesananController::class, 'cek'])->name('pemesanan.cek');
 
 // Admin Auth Routes
 Route::get('/admin/login', [AuthController::class, 'showLoginForm'])
@@ -43,13 +35,37 @@ Route::post('/admin/logout', [AuthController::class, 'logout'])
 
 // Admin Routes
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
-    
-    // Pemesanan Routes
-    Route::get('/pemesanan', [App\Http\Controllers\Admin\PemesananController::class, 'index'])->name('pemesanan.index');
+
+    // Dashboard
+    Route::get('/', [App\Http\Controllers\Admin\DashboardController::class, 'index'])
+        ->name('dashboard');
+
+    // Pemesanan (Input + Antrian)
+    Route::get('/pemesanan', [App\Http\Controllers\Admin\PemesananController::class, 'index'])
+        ->name('pemesanan.index');
+    Route::get('/pemesanan/create', [App\Http\Controllers\Admin\PemesananController::class, 'create'])
+        ->name('pemesanan.create');
+    Route::post('/pemesanan', [App\Http\Controllers\Admin\PemesananController::class, 'store'])
+        ->name('pemesanan.store');
+    Route::get('/pemesanan/{pemesanan}', [App\Http\Controllers\Admin\PemesananController::class, 'show'])
+        ->name('pemesanan.show');
     Route::patch('/pemesanan/{pemesanan}/status', [App\Http\Controllers\Admin\PemesananController::class, 'updateStatus'])
         ->name('pemesanan.update-status');
-    
+
+    // Karpet Menumpuk
+    Route::get('/karpet-menumpuk', [App\Http\Controllers\Admin\PemesananController::class, 'karpetMenumpuk'])
+        ->name('karpet-menumpuk');
+
+    // Transaksi
+    Route::get('/transaksi', [App\Http\Controllers\Admin\PemesananController::class, 'transaksi'])
+        ->name('transaksi.index');
+    Route::patch('/transaksi/{pembayaran}/status', [App\Http\Controllers\Admin\PemesananController::class, 'updatePembayaran'])
+        ->name('transaksi.update-status');
+
+    // Laporan
+    Route::get('/laporan', [App\Http\Controllers\Admin\PemesananController::class, 'laporan'])
+        ->name('laporan.index');
+
     // Layanan Routes
     Route::resource('layanan', App\Http\Controllers\Admin\LayananController::class);
 });

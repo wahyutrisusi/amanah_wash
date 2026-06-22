@@ -3,20 +3,31 @@
 @section('title', 'Tambah Layanan')
 
 @section('content')
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0">Tambah Layanan Baru</h5>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('admin.layanan.store') }}" method="POST">
-                @csrf
-                @include('admin.layanan._form')
-                
-                <div class="text-end">
-                    <a href="{{ route('admin.layanan.index') }}" class="btn btn-secondary me-2">Batal</a>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3">
+                <h6 class="mb-0 fw-semibold">
+                    <i class="fas fa-plus-circle me-2 text-primary"></i>Tambah Layanan Baru
+                </h6>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ route('admin.layanan.store') }}" method="POST">
+                    @csrf
+
+                    @include('admin.layanan._form')
+
+                    <div class="d-flex gap-2 mt-3">
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fas fa-save me-2"></i>Simpan
+                        </button>
+                        <a href="{{ route('admin.layanan.index') }}" class="btn btn-outline-secondary">
+                            Batal
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-@endsection 
+</div>
+@endsection

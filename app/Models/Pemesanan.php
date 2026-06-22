@@ -15,33 +15,72 @@ class Pemesanan extends Model
         'layanan_id',
         'nama',
         'telepon',
-        'tanggal',
-        'waktu',
         'alamat',
-        'kecamatan',
-        'kota',
-        'kode_pos',
-        'patokan',
+        'jumlah_karpet',
         'catatan',
+        'nomor_antrian',
         'status',
-        'cuci_karpet',
-        'metode_pengambilan',
-        'metode_pengembalian',
-        'notifikasi_wa',
-        'status_pengerjaan',
-        'estimasi_selesai'
+        'tanggal_masuk',
+        'tanggal_selesai',
     ];
 
     protected $casts = [
-        'tanggal' => 'date',
-        'waktu' => 'datetime',
-        'estimasi_selesai' => 'datetime',
-        'cuci_karpet' => 'boolean',
-        'notifikasi_wa' => 'boolean'
+        'tanggal_masuk' => 'date',
+        'tanggal_selesai' => 'date',
     ];
+
+    // Status constants
+    const STATUS_MENUNGGU  = 'menunggu';
+    const STATUS_DICUCI    = 'dicuci';
+    const STATUS_DIJEMUR   = 'dijemur';
+    const STATUS_SELESAI   = 'selesai';
+    const STATUS_DIAMBIL   = 'diambil';
+
+    public static function statusList(): array
+    {
+        return [
+            self::STATUS_MENUNGGU => 'Menunggu',
+            self::STATUS_DICUCI   => 'Dicuci',
+            self::STATUS_DIJEMUR  => 'Dijemur',
+            self::STATUS_SELESAI  => 'Selesai',
+            self::STATUS_DIAMBIL  => 'Diambil',
+        ];
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return self::statusList()[$this->status] ?? ucfirst($this->status);
+    }
+
+    public function getStatusColorAttribute(): string
+    {
+        return match($this->status) {
+            self::STATUS_MENUNGGU => 'warning',
+            self::STATUS_DICUCI   => 'info',
+            self::STATUS_DIJEMUR  => 'primary',
+            self::STATUS_SELESAI  => 'success',
+            self::STATUS_DIAMBIL  => 'secondary',
+            default               => 'dark',
+        };
+    }
 
     public function layanan()
     {
         return $this->belongsTo(Layanan::class);
+    }
+
+    public function pembayaran()
+    {
+        return $this->hasOne(Pembayaran::class);
+    }
+
+    /**
+     * Generate next queue number (5-digit, resets daily).
+     */
+    public static function generateNomorAntrian(): string
+    {
+        $today = now()->format('Y-m-d');
+        $count = self::whereDate('tanggal_masuk', $today)->count() + 1;
+        return str_pad($count, 5, '0', STR_PAD_LEFT);
     }
 } 

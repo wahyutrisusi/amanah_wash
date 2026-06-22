@@ -13,11 +13,14 @@ class Layanan extends Model
     
     protected $fillable = [
         'nama',
-        'harga',
         'deskripsi',
-        'harga_karpet',
-        'biaya_jemput',
-        'biaya_antar'
+        'harga_per_karpet',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'harga_per_karpet' => 'decimal:2',
     ];
 
     public function pemesanans()

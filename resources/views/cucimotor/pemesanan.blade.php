@@ -72,7 +72,7 @@
 
                             
 
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <label class="form-label">Metode Pengambilan</label>
                                 <select class="form-select @error('metode_pengambilan') is-invalid @enderror" 
                                         name="metode_pengambilan" id="metode_pengambilan" required>
@@ -83,9 +83,9 @@
                                 @error('metode_pengambilan')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> -->
 
-                            <div class="mb-3">
+                            <!-- <div class="mb-3">
                                 <label class="form-label">Metode Pengembalian</label>
                                 <select class="form-select @error('metode_pengembalian') is-invalid @enderror" 
                                         name="metode_pengembalian" id="metode_pengembalian" required>
@@ -96,7 +96,7 @@
                                 @error('metode_pengembalian')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> -->
 
                             <div class="mb-3">
                                 <label class="form-label">Notifikasi</label>
